@@ -1,4 +1,4 @@
-Add build status
+[![Build Status](https://travis-ci.org/mediapeers/ansible-role-ruby.svg?branch=master)](https://travis-ci.org/mediapeers/ansible-role-ruby)
 
 # Ansible role ruby
 
