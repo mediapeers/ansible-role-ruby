@@ -1,4 +1,4 @@
-TODO Add build status
+Add build status
 
 # Ansible role ruby
 
