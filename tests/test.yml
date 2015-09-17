@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - { role: ansible-role-ruby, ruby-version: 2.2.3 }

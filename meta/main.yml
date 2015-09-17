@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  author: Andrew Angelo Ang
-  description: "Installs ruby-install."
-  company: InnoHub, Inc.
+  author: Stefan Horning, Andrew Angelo Ang
+  description: "Installs a ruby version"
+  company: Mediapeers
   license: MIT
   min_ansible_version: 1.4
   platforms:
