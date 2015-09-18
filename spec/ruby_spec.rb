@@ -24,8 +24,25 @@ describe "Ruby installation" do
     its(:stdout) { should match /#{ruby_edition} #{ruby_version}/ }
   end
 
+  # disable/change if you overwrite the default version
   describe command('gem -v') do
     its(:stdout) { should match /2.4/ }
+  end
+
+  describe file('/usr/local/bin/ruby') do
+    it { should be_symlink }
+  end
+
+  describe file('/usr/local/bin/gem') do
+    it { should be_symlink }
+  end
+
+  describe file('/usr/local/bin/rake') do
+    it { should be_symlink }
+  end
+
+  describe file('/usr/local/bin/irb') do
+    it { should be_symlink }
   end
 
   # Should cleanup after itself
