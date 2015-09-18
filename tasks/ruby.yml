@@ -3,6 +3,10 @@
 # which takes care of all the things needed behind the scenes.
 # Additional this play also installs bundler and does the symlinking.
 
+- name: Output ruby edition and version to be installed
+  debug:
+    msg: "{{ruby_edition}} - {{ruby_version}}"
+
 - name: Install APT prerequisite packages that are necessary to compile applications and gems with native extensions
   apt:
     name: "{{ item }}"
@@ -23,39 +27,67 @@
     - patch
 
 - name: Check what ruby version is installed on the system already
-  command: ruby -v
+  command: "{{ ruby_executable }} -v"
   ignore_errors: yes
   register: installed_ruby_version
 
-- name: Debug output
-  debug:
-    msg: "{{installed_ruby_version.stdout}} == {{ruby_edition}} {{ruby_version}} ?"
-
-- name: Check if the installed version already matches the verion to be installed
+- name: Check if the installed version already matches the version to be installed
   set_fact:
-    already_installed: true
-  when: installed_ruby_version.stdout == '{{ruby_edition}} {{ruby_version}}'
+    ruby_version_already_installed: true
+  when: installed_ruby_version.rc == 0 and installed_ruby_version.stdout | match("{{ruby_edition}} {{ruby_version}}.*")
+
+- name: Info output
+  debug:
+    msg: "Ruby version {{ruby_version_string}} is already installed, skipping"
+  when: ruby_version_already_installed is defined
 
 - name: Install given ruby version from source using ruby-install
   command: ruby-install {{ruby_edition}} {{ruby_version}} --rubies-dir {{rubies_dir}} --cleanup
-  when: ruby_edition != 'jruby'
+  when: ruby_edition != 'jruby' and ruby_version_already_installed is undefined
 
-- name: Install jruby dependencies manually as the ruby-install dependencies install Java with all GUI and sound packages
+# Unfortunately as of now ruby-install is installing full java (not just headless-jre).
+# This includes also GUI and sound packages which are nont needed to run ruby and a liability
+# when installing on a server. See https://github.com/postmodern/ruby-install/pull/131
+# Hence this workaround:
+- name: Install jruby dependencies manually as the ruby-install would do too much
   apt: name=openjdk-{{jruby_jre_version}}-jre-headless state=present
   when: ruby_edition == 'jruby'
 
-# Unfortunately as of now ruby-install is installing full java (not just headless-jre). See https://github.com/postmodern/ruby-install/pull/131
 - name: Install given ruby version from source using ruby-install (for jruby we need to disable dependency install to not create a mess)
   command: ruby-install {{ruby_edition}} {{ruby_version}} --rubies-dir {{rubies_dir}} --cleanup --no-install-deps
-  when: ruby_edition == 'jruby'
+  when: ruby_edition == 'jruby' and ruby_version_already_installed is undefined
+# end of jruby workaround ---
 
 - name: Install Bundler
-  command: "{{ gem_executable }} install bundler {{ ruby_bundler_flags }}
-            creates={{ ruby_location }}/bin/bundle"
+  shell: "{{ gem_executable }} install bundler {{ ruby_bundler_flags }} creates={{ ruby_location }}/bin/bundle"
+  environment:
+    PATH: "{{ansible_env.PATH}}:{{ruby_location}}/bin"
 
-- name: Make Ruby symlinks
+- name: Create common Ruby bin symlinks
   file:
     path: "/usr/local/bin/{{ item }}"
     src: "{{ ruby_location }}/bin/{{ item }}"
     state: link
   with_items: ruby_symlinks
+
+- name: Additional JRuby symlinks
+  file:
+    path: "/usr/local/bin/{{ item }}"
+    src: "{{ ruby_location }}/bin/{{ item }}"
+    state: link
+  with_items:
+    - jruby
+    - jgem
+    - testrb
+    - jirb
+  when: ruby_edition == 'jruby'
+
+- name: Additional Ruby (MRI) symlinks
+  file:
+    path: "/usr/local/bin/{{ item }}"
+    src: "{{ ruby_location }}/bin/{{ item }}"
+    state: link
+  with_items:
+    - erb
+  when: ruby_edition == 'ruby'
+

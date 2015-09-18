@@ -2,14 +2,12 @@
 
 ruby_symlinks:
   - bundle
-  - erb
   - gem
   - irb
   - rake
   - rdoc
   - ri
   - ruby
-  - testrb
 
 ruby_executable: "{{ ruby_location }}/bin/ruby"
 gem_executable: "{{ ruby_location }}/bin/gem"
