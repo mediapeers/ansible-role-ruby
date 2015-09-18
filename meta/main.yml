@@ -1,7 +1,7 @@
 ---
 galaxy_info:
-  author: Stefan Horning, Andrew Angelo Ang
-  description: "Installs a ruby version"
+  author: Stefan Horning <horning@mediapeers.com>
+  description: "Installs ruby from source in given version"
   company: Mediapeers
   license: MIT
   min_ansible_version: 1.4
@@ -12,4 +12,5 @@ galaxy_info:
   categories:
   - development
   - system
+  - language:ruby
 dependencies: []
