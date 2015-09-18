@@ -1,0 +1,61 @@
+---
+# Install the given ruby edition in the given version using ruby-install for most of the process
+# which takes care of all the things needed behind the scenes.
+# Additional this play also installs bundler and does the symlinking.
+
+- name: Install APT prerequisite packages that are necessary to compile applications and gems with native extensions
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - autoconf
+    - build-essential
+
+- name: Ensure all dependencies are met to run the ruby-install tool without problems
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - wget
+    - bzip2
+    - tar
+    - patch
+
+- name: Check what ruby version is installed on the system already
+  command: ruby -v
+  ignore_errors: yes
+  register: installed_ruby_version
+
+- name: Debug output
+  debug:
+    msg: "{{installed_ruby_version.stdout}} == {{ruby_edition}} {{ruby_version}} ?"
+
+- name: Check if the installed version already matches the verion to be installed
+  set_fact:
+    already_installed: true
+  when: installed_ruby_version.stdout == '{{ruby_edition}} {{ruby_version}}'
+
+- name: Install given ruby version from source using ruby-install
+  command: ruby-install {{ruby_edition}} {{ruby_version}} --rubies-dir {{rubies_dir}} --cleanup
+  when: ruby_edition != 'jruby'
+
+- name: Install jruby dependencies manually as the ruby-install dependencies install Java with all GUI and sound packages
+  apt: name=openjdk-{{jruby_jre_version}}-jre-headless state=present
+  when: ruby_edition == 'jruby'
+
+# Unfortunately as of now ruby-install is installing full java (not just headless-jre). See https://github.com/postmodern/ruby-install/pull/131
+- name: Install given ruby version from source using ruby-install (for jruby we need to disable dependency install to not create a mess)
+  command: ruby-install {{ruby_edition}} {{ruby_version}} --rubies-dir {{rubies_dir}} --cleanup --no-install-deps
+  when: ruby_edition == 'jruby'
+
+- name: Install Bundler
+  command: "{{ gem_executable }} install bundler {{ ruby_bundler_flags }}
+            creates={{ ruby_location }}/bin/bundle"
+
+- name: Make Ruby symlinks
+  file:
+    path: "/usr/local/bin/{{ item }}"
+    src: "{{ ruby_location }}/bin/{{ item }}"
+    state: link
+  with_items: ruby_symlinks
