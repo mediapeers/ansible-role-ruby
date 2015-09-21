@@ -45,6 +45,10 @@ describe "Ruby installation" do
     it { should be_symlink }
   end
 
+  describe file('/usr/local/bin/bundle') do
+    it { should be_symlink }
+  end
+
   # Should cleanup after itself
   describe file("/usr/local/src/#{ruby_edition}-#{ruby_version}") do
     it { should_not exist }
