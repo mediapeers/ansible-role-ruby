@@ -7,6 +7,10 @@
   debug:
     msg: "{{ruby_edition}} - {{ruby_version}}"
 
+- name: Add apt repositories for ruby dependencies
+  apt_repository: repo={{ item }} state=present
+  with_items: ruby_deps_apt_repos
+
 - name: Install APT prerequisite packages that are necessary to compile applications and gems with native extensions
   apt:
     name: "{{ item }}"
@@ -45,12 +49,19 @@
   command: ruby-install {{ruby_edition}} {{ruby_version}} --rubies-dir {{rubies_dir}} --cleanup
   when: ruby_edition != 'jruby' and ruby_version_already_installed is undefined
 
+# Accept Java license in case Oracle Java is being used
+- name: Accept Oracle license prior JDK installation
+  shell: echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections; echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections creates=/usr/lib/jvm/java-7-oracle
+  when: ruby_edition == 'jruby' and jruby_jre_package|match('oracle')
+
 # Unfortunately as of now ruby-install is installing full java (not just headless-jre).
 # This includes also GUI and sound packages which are nont needed to run ruby and a liability
 # when installing on a server. See https://github.com/postmodern/ruby-install/pull/131
 # Hence this workaround:
-- name: Install jruby dependencies manually as the ruby-install would do too much
-  apt: name=openjdk-{{jruby_jre_version}}-jre-headless state=present
+# Also if you want another java edition (not the open jre) this comes in quite handy
+
+- name: Install Jruby dependencies (Java) manually as the ruby-install would do too much
+  apt: name={{jruby_jre_package}} state=present
   when: ruby_edition == 'jruby'
 
 - name: Install given ruby version from source using ruby-install (for jruby we need to disable dependency install to not create a mess)
