@@ -8,17 +8,8 @@
     msg: "{{ruby_edition}} - {{ruby_version}}"
 
 - name: Add apt repositories for ruby dependencies
-  apt_repository: repo={{ item }} state=present
+  apt_repository: repo={{ item }} state=present update_cache=yes
   with_items: ruby_deps_apt_repos
-
-- name: Install APT prerequisite packages that are necessary to compile applications and gems with native extensions
-  apt:
-    name: "{{ item }}"
-    state: latest
-    update_cache: yes
-  with_items:
-    - autoconf
-    - build-essential
 
 - name: Ensure all dependencies are met to run the ruby-install tool without problems
   apt:

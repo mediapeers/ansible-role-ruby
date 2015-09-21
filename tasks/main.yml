@@ -1,6 +1,15 @@
 ---
 # Main tasks file for the mpx.ruby role
 
+- name: Install build essentials
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - autoconf
+    - build-essential
+
 # Installs the ruby-install tool:
 - include: ruby_install.yml
 
