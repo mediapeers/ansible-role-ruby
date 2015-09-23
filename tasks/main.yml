@@ -1,14 +1,13 @@
 ---
 # Main tasks file for the mpx.ruby role
 
-- name: Install build essentials
+- name: Ensure make is installed (needed to install ruby_install)
   apt:
     name: "{{ item }}"
-    state: latest
+    state: present
     update_cache: yes
   with_items:
-    - autoconf
-    - build-essential
+    - make
 
 # Installs the ruby-install tool:
 - include: ruby_install.yml

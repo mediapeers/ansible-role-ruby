@@ -26,6 +26,6 @@ script:
   # Allowing two 'changes' here as those are only reading state not changing anything.
   - >
     ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo
-    | grep -q 'changed=2.*failed=0'
+    | grep -q 'changed=1.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)

@@ -8,8 +8,16 @@ describe "Ruby installation" do
     ruby_edition = 'ruby'
   end
 
-  describe package('build-essential') do
-    it { should be_installed }
+  if ruby_edition == 'ruby'
+    describe package('build-essential') do
+      it { should be_installed } # ruby-install takes care of installing
+    end
+  end
+
+  if ruby_edition == 'jruby'
+    describe package(ANSIBLE_VARS.fetch('jruby_jre_package', 'openjdk-7-jre-headless')) do
+      it { should be_installed }
+    end
   end
 
   describe file('/opt/rubies') do

@@ -21,35 +21,23 @@
     - tar
     - patch
 
-- name: Check what ruby version is installed on the system already
-  command: "{{ ruby_executable }} -v"
-  ignore_errors: yes
-  register: installed_ruby_version
-
-- name: Check if the installed version already matches the version to be installed
-  set_fact:
-    ruby_version_already_installed: true
-  when: installed_ruby_version.rc == 0 and installed_ruby_version.stdout | match("{{ruby_edition}} {{ruby_version}}.*")
-
-- name: Info output
-  debug:
-    msg: "Ruby version {{ruby_version_string}} is already installed, skipping"
-  when: ruby_version_already_installed is defined
-
 - name: Install given ruby version from source using ruby-install
   command: ruby-install {{ruby_edition}} {{ruby_version}} --rubies-dir {{rubies_dir}} --cleanup
-  when: ruby_edition != 'jruby' and ruby_version_already_installed is undefined
+    args:
+      creates: "{{ruby_executable}}"
+  when: ruby_edition != 'jruby'
 
+# --- Jruby special treament ---
 # Accept Java license in case Oracle Java is being used
 - name: Accept Oracle license prior JDK installation
   shell: echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections; echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections creates=/usr/lib/jvm/java-8-oracle
   when: ruby_edition == 'jruby' and jruby_jre_package|match('oracle')
 
-# Unfortunately as of now ruby-install is installing full java (not just headless-jre).
+# ruby-install is installing full java (not just headless-jre).
 # This includes also GUI and sound packages which are nont needed to run ruby and a liability
 # when installing on a server. See https://github.com/postmodern/ruby-install/pull/131
-# Hence this workaround:
-# Also if you want another java edition (not the open jre) this comes in quite handy
+# This role thus alows selecting your own java package, this is also handy if you want another
+# java edition (such as oracle java)
 
 - name: Install Jruby dependencies (Java) manually as the ruby-install would do too much
   apt: name={{jruby_jre_package}} state=present
@@ -57,8 +45,10 @@
 
 - name: Install given ruby version from source using ruby-install (for jruby we need to disable dependency install to not create a mess)
   command: ruby-install {{ruby_edition}} {{ruby_version}} --rubies-dir {{rubies_dir}} --cleanup --no-install-deps
-  when: ruby_edition == 'jruby' and ruby_version_already_installed is undefined
-# end of jruby workaround ---
+    args:
+      create: "{{ruby_executable}}"
+  when: ruby_edition == 'jruby'
+# --- end of Jruby special treament ---
 
 - name: Install Bundler
   shell: "{{ gem_executable }} install bundler {{ ruby_bundler_flags }} creates={{ ruby_location }}/bin/bundle"
