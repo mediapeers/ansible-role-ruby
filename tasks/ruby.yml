@@ -23,8 +23,8 @@
 
 - name: Install given ruby version from source using ruby-install
   command: ruby-install {{ruby_edition}} {{ruby_version}} --rubies-dir {{rubies_dir}} --cleanup
-    args:
-      creates: "{{ruby_executable}}"
+  args:
+    creates: "{{ruby_executable}}"
   when: ruby_edition != 'jruby'
 
 # --- Jruby special treament ---
@@ -45,8 +45,8 @@
 
 - name: Install given ruby version from source using ruby-install (for jruby we need to disable dependency install to not create a mess)
   command: ruby-install {{ruby_edition}} {{ruby_version}} --rubies-dir {{rubies_dir}} --cleanup --no-install-deps
-    args:
-      create: "{{ruby_executable}}"
+  args:
+    create: "{{ruby_executable}}"
   when: ruby_edition == 'jruby'
 # --- end of Jruby special treament ---
 
