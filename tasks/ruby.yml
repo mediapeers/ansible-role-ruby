@@ -43,6 +43,11 @@
   apt: name={{jruby_jre_package}} state=present
   when: ruby_edition == 'jruby'
 
+# Workaround for https://github.com/jruby/jruby/issues/3285 for jruby versions > 1.7.21
+- name: Install Jruby dependency (libc6-dev) to fix a problem with libcrypt which is otherwise not found by jrubies gem command
+  apt: name=libc6-dev state=present
+  when: ruby_edition == 'jruby'
+
 - name: Install given ruby version from source using ruby-install (for jruby we need to disable dependency install to not create a mess)
   command: ruby-install {{ruby_edition}} {{ruby_version}} --rubies-dir {{rubies_dir}} --cleanup --no-install-deps
   args:
