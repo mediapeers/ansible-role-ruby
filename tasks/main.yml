@@ -3,11 +3,9 @@
 
 - name: Ensure make is installed (needed to install ruby_install)
   apt:
-    name: "{{ item }}"
+    name: make
     state: present
     update_cache: yes
-  with_items:
-    - make
 
 # Installs the ruby-install tool:
 - include: ruby_install.yml
