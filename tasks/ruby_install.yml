@@ -6,7 +6,7 @@
 - name: Download ruby-install
   get_url:
     url: https://github.com/postmodern/ruby-install/archive/v{{ ruby_install_version }}.tar.gz
-    dest: ruby-install-{{ ruby_install_version }}.tar.gz
+    dest: "{{ ansible_env.HOME }}/ruby-install-{{ ruby_install_version }}.tar.gz"
   when:
     ansible_local is not defined or
     ansible_local.ruby_install is not defined or
@@ -16,8 +16,8 @@
 - name: Extract ruby-install
   unarchive:
     copy: no
-    src: ruby-install-{{ ruby_install_version }}.tar.gz
-    dest: .
+    src: "{{ ansible_env.HOME }}/ruby-install-{{ ruby_install_version }}.tar.gz"
+    dest: "{{ ansible_env.HOME }}"
   when: ruby_install_downloaded | changed
 
 - name: Install ruby-install
