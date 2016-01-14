@@ -7,6 +7,14 @@
   debug:
     msg: "{{ruby_edition}} - {{ruby_version}}"
 
+- name: Get user
+  shell: whoami
+  register: whoami
+
+- name: Output user
+  debug:
+    msg: "{{ whoami.stdout }}"
+
 - name: Add apt repositories for ruby dependencies
   apt_repository: repo={{ item }} state=present update_cache=yes
   with_items: ruby_deps_apt_repos
