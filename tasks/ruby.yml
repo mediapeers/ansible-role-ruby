@@ -60,15 +60,6 @@
   environment:
     PATH: "{{ansible_env.PATH}}:{{ruby_location}}/bin"
 
-
-- name: Check files
-  shell: "ls {{ ruby_location }}/bin/"
-  register: bin_files
-
-- name: Output
-  debug:
-    msg: "{{ bin_files.stdout }}"
-
 - name: Create common Ruby bin symlinks
   file:
     path: "/usr/local/bin/{{ item }}"
