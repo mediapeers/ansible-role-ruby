@@ -61,7 +61,6 @@
     PATH: "{{ansible_env.PATH}}:{{ruby_location}}/bin"
 
 - name: Create common Ruby bin symlinks
-  become: true
   file:
     path: "/usr/local/bin/{{ item }}"
     src: "{{ ruby_location }}/bin/{{ item }}"
@@ -69,7 +68,6 @@
   with_items: ruby_symlinks
 
 - name: Additional JRuby symlinks
-  become: true
   file:
     path: "/usr/local/bin/{{ item }}"
     src: "{{ ruby_location }}/bin/{{ item }}"
@@ -82,7 +80,6 @@
   when: ruby_edition == 'jruby'
 
 - name: Additional Ruby (MRI) symlinks
-  become: true
   file:
     path: "/usr/local/bin/{{ item }}"
     src: "{{ ruby_location }}/bin/{{ item }}"
