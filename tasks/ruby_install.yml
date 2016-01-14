@@ -23,13 +23,13 @@
 - name: Install ruby-install
   become: true
   shell:
-    chdir=ruby-install-{{ ruby_install_version }}
+    chdir={{ ansible_env.HOME }}/ruby-install-{{ ruby_install_version }}
     make install
   when: ruby_install_downloaded | changed
   register: ruby_install_installed
 
 - name: Clean up ruby-install sources
-  shell: rm -rf ruby-install-*
+  shell: rm -rf {{ ansible_env.HOME }}/ruby-install-*
   when: ruby_install_downloaded | changed
 
 #
