@@ -16,7 +16,7 @@
   when: ruby_install_downloaded | changed
 
 - name: Install ruby-install
-  sudo: true
+  become: true
   shell:
     chdir=ruby-install-{{ ruby_install_version }}
     make install
@@ -36,9 +36,9 @@
   register: installed_ruby_install_version
 
 - name: Create ansible facts directory
-  sudo: true
+  become: true
   file: state=directory recurse=yes path=/etc/ansible/facts.d
 
 - name: Set ruby-install facts
-  sudo: true
+  become: true
   template: src=ruby_install.fact dest=/etc/ansible/facts.d/ruby_install.fact
