@@ -4,7 +4,9 @@
 # See https://github.com/postmodern/ruby-install for more details
 
 - name: Download ruby-install
-  shell: wget -O ruby-install-{{ ruby_install_version }}.tar.gz https://github.com/postmodern/ruby-install/archive/v{{ ruby_install_version }}.tar.gz
+  get_url:
+    url: https://github.com/postmodern/ruby-install/archive/v{{ ruby_install_version }}.tar.gz
+    dest: ruby-install-{{ ruby_install_version }}.tar.gz
   when:
     ansible_local is not defined or
     ansible_local.ruby_install is not defined or
@@ -12,7 +14,10 @@
   register: ruby_install_downloaded
 
 - name: Extract ruby-install
-  shell: tar -xzvf ruby-install-{{ ruby_install_version }}.tar.gz
+  unarchive:
+    copy: no
+    src: ruby-install-{{ ruby_install_version }}.tar.gz
+    dest: .
   when: ruby_install_downloaded | changed
 
 - name: Install ruby-install
