@@ -60,12 +60,30 @@
   environment:
     PATH: "{{ansible_env.PATH}}:{{ruby_location}}/bin"
 
-- name: Create common Ruby bin symlinks
+#- name: Create common Ruby bin symlinks
+#  file:
+#    path: "/usr/local/bin/{{ item }}"
+#    src: "{{ ruby_location }}/bin/{{ item }}"
+#    state: link
+#  with_items: ruby_symlinks
+
+- name: Create Ruby bin symlink for bundle
   file:
-    path: "/usr/local/bin/{{ item }}"
-    src: "{{ ruby_location }}/bin/{{ item }}"
+    path: "/usr/local/bin/bundle"
+    src: "{{ ruby_location }}/bin/bundle"
     state: link
-  with_items: ruby_symlinks
+
+- name: Create Ruby bin symlinkg for gem
+  file:
+    path: "/usr/local/bin/gem"
+    src: "{{ ruby_location }}/bin/gem"
+    state: link
+
+- name: Create Ruby bin symlinkg for irb
+  file:
+    path: "/usr/local/bin/irb"
+    src: "{{ ruby_location }}/bin/irb"
+    state: link
 
 - name: Additional JRuby symlinks
   file:
