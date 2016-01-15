@@ -67,10 +67,23 @@
 #    state: link
 #  with_items: ruby_symlinks
 
-- name: Create common Ruby bin symlinks (using shell)
-  command: ln -s {{ruby_location}}/bin/{{item}} /usr/local/bin/{{item}}
-  with_items: ruby_symlinks
-  register: symlinking
+- name: Create Ruby bin symlink for bundle
+  file:
+    path: "/usr/local/bin/bundle"
+    src: "{{ ruby_location }}/bin/bundle"
+    state: link
+
+- name: Create Ruby bin symlinkg for gem
+  file:
+    path: "/usr/local/bin/gem"
+    src: "{{ ruby_location }}/bin/gem"
+    state: link
+
+- name: Create Ruby bin symlinkg for irb
+  file:
+    path: "/usr/local/bin/irb"
+    src: "{{ ruby_location }}/bin/irb"
+    state: link
 
 - name: Output symlinking results
   debug:
