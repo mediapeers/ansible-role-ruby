@@ -85,10 +85,6 @@
     src: "{{ ruby_location }}/bin/irb"
     state: link
 
-- name: Output symlinking results
-  debug:
-    msg: "{{ symlinking.stdout }}"
-
 - name: Additional JRuby symlinks
   file:
     path: "/usr/local/bin/{{ item }}"
