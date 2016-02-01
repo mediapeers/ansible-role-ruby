@@ -15,7 +15,6 @@ before_install:
   - sudo rm /usr/bin/ruby /usr/bin/gem
   - rvm implode --force
   - sudo rm -r /usr/local/rvm/
-  - echo $PATH
 
 install:
   # Install Ansible.
@@ -40,7 +39,7 @@ script:
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
 
-  - ruby -v
+  - sudo ruby -v
   # Installung & running serverspec (using ruby installed by role)
-  - gem install serverspec
-  - rake spec
+  - sudo gem install serverspec
+  - sudo rake spec
