@@ -1,6 +1,6 @@
 # mpx.ruby defaults
 
-ruby_version_string: 2.2.3 # can also contain the ruby edition seperated with a dash such as jruby-1.7, wihout it defaults to ruby
+ruby_version_string: 2.2.3 # can also contain the ruby edition separated with a dash such as jruby-1.7, wihout it it defaults to mri
 
 contains_edition: '{{ruby_version_string|match(".*-.+")}}'
 ruby_version: "{% if contains_edition|bool %}{{ ruby_version_string.split('-')[1] }}{% else %}{{ruby_version_string}}{% endif %}"

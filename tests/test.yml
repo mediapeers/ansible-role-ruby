@@ -1,5 +1,7 @@
 ---
 - hosts: localhost
   become: true
+  vars:
+    ruby-version: 2.2.3
   roles:
-    - { role: ansible-role-ruby, ruby-version: 2.2.3 }
+    - ansible-role-ruby
