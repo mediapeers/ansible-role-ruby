@@ -12,17 +12,13 @@ before_install:
   - sudo apt-get update -qq
 
   # Delete rubieis
-  - ruby -v
-  - which ruby
-  - sudo ruby -v
-  - sudo which ruby
-
   - sudo rm /usr/bin/ruby /usr/bin/gem
-  - rvm implode --help
   - rvm implode --force
   - sudo rm -r /usr/local/rvm/
-  - ruby -v
-  - sudo ruby -v
+
+  - which ruby
+  - sudo which ruby
+  - cat .bashrc
 
 install:
   # Install Ansible.
