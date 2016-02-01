@@ -11,6 +11,12 @@ env:
 before_install:
   - sudo apt-get update -qq
 
+  # Delete rubieis
+  - ruby -v
+  - which ruby
+  - sudo ruby -v
+  - sudo which ruby
+
 install:
   # Install Ansible.
   - pip install ansible
