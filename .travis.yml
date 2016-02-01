@@ -17,6 +17,11 @@ before_install:
   - sudo ruby -v
   - sudo which ruby
 
+  - sudo rm /usr/bin/ruby /usr/bin/gem
+  - sudo rm -r /usr/local/rvm/
+  - ruby -v
+  - sudo ruby -v
+
 install:
   # Install Ansible.
   - pip install ansible
