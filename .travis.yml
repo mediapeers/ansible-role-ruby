@@ -14,7 +14,6 @@ before_install:
   # Delete rubieis
   - sudo rm /usr/bin/ruby /usr/bin/gem
   - rvm implode --force
-  - gem uninstall rvm
   - sudo rm -r /usr/local/rvm/
   - echo $PATH
 
