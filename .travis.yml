@@ -35,7 +35,6 @@ script:
     || (echo 'Idempotence test: fail' && exit 1)
 
   - ruby -v
-  - ls /opt/rubies/
   # Installung & running serverspec (using ruby installed by role)
   - gem install serverspec
   - rake spec
