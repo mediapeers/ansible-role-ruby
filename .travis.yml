@@ -18,7 +18,8 @@ before_install:
   - sudo which ruby
 
   - sudo rm /usr/bin/ruby /usr/bin/gem
-  - rvm implode
+  - rvm implode --help
+  - rvm implode --force
   - sudo rm -r /usr/local/rvm/
   - ruby -v
   - sudo ruby -v
