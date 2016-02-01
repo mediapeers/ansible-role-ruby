@@ -16,10 +16,6 @@ before_install:
   - rvm implode --force
   - sudo rm -r /usr/local/rvm/
 
-  - which ruby
-  - sudo which ruby
-  - cat .bashrc
-
 install:
   # Install Ansible.
   - pip install ansible
