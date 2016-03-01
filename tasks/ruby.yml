@@ -55,7 +55,7 @@
   when: ruby_edition == 'jruby'
 # --- end of Jruby special treament ---
 
-- name: Add ruby bin dir to path
+- name: Add ruby bin dir to the global PATH
   replace:
     dest: /etc/environment
     regexp: '^PATH=.*$'

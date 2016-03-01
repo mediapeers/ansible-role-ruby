@@ -5,8 +5,7 @@ describe "Ruby install setup" do
     it { should be_installed }
   end
 
-
   describe command('ruby-install --version') do
-    its(:stdout) { should match /ruby-install: 0.5/ }
+    its(:stdout) { should match /ruby-install: #{ANSIBLE_VARS.fetch('ruby_install_version', 'FAIL')}/ }
   end
 end
