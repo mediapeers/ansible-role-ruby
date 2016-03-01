@@ -49,7 +49,7 @@
   when: ruby_edition == 'jruby'
 
 - name: Install given jruby version from source using ruby-install (for jruby we need to disable dependency install to not create a mess)
-command: ruby-install {{ruby_edition}} {{ruby_version}} --install-dir {{rubies_dir}} --cleanup --no-install-deps --no-reinstall
+  command: ruby-install {{ruby_edition}} {{ruby_version}} --install-dir {{rubies_dir}} --cleanup --no-install-deps --no-reinstall
   args:
     creates: "{{ruby_executable}}"
   when: ruby_edition == 'jruby'
