@@ -6,7 +6,7 @@ contains_edition: '{{ruby_version_string|match(".*-.+")}}'
 ruby_version: "{% if contains_edition|bool %}{{ ruby_version_string.split('-')[1] }}{% else %}{{ruby_version_string}}{% endif %}"
 ruby_edition: "{% if contains_edition|bool %}{{ ruby_version_string.split('-')[0] }}{% else %}ruby{% endif %}"
 
-ruby_install_version: '0.5.0'
+ruby_install_version: '0.6.0'
 rubies_dir: /opt/rubies
 ruby_location: "{{rubies_dir}}/{{ruby_edition}}-{{ruby_version}}"
 
