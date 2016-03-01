@@ -58,7 +58,7 @@
 - name: Add ruby bin dir to path
   replace:
     dest: /etc/environment
-    regex: '^PATH=.*$'
+    regexp: '^PATH=.*$'
     backup: yes
     replace: "{{ansible_env.PATH}}:{{ruby_location}}/bin"
 
