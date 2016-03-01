@@ -56,18 +56,23 @@
 # --- end of Jruby special treament ---
 
 - name: Add ruby bin dir to the global PATH
-  replace:
-    dest: /etc/environment
-    regexp: '^PATH=.*$'
-    backup: yes
-    replace: "{{ansible_env.PATH}}:{{ruby_location}}/bin"
+  lineinfile:
+    dest: /etc/bash.bashrc
+    insertafter: 'EOF'
+    line: 'export PATH="{{ruby_location}}/bin:$PATH"'
+    state: present
+
+- name: Source /etc/profile to get new PATH
+  shell: "source /etc/bash.bashrc"
+  args:
+    executable: /bin/bash
 
 - name: Install Bundler
   shell: "{{ gem_executable }} install bundler {{ ruby_bundler_flags }} creates={{ ruby_location }}/bin/bundle"
-  environment:
-    PATH: "{{ansible_env.PATH}}:{{ruby_location}}/bin"
+  args:
+    executable: /bin/bash
 
-- name: Symlink common Ruby bins to ensure they are available without PATH being modified
+- name: Symlink common Ruby bins to ensure they are always available even without PATH setting
   file:
     path: "/usr/local/bin/{{ item }}"
     src: "{{ ruby_location }}/bin/{{ item }}"

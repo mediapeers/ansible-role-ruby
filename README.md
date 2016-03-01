@@ -22,10 +22,13 @@ Tested only on Ubuntu 14.04 Trusty Server. Supports only Ubuntu and perhaps Debi
 
 ## Role Variables
 * ruby_version_string: Edition and version of ruby you want to have installed. Default to ruby (MRI) 2.2.3.
-So you can either just do a version like `2.2.1` if you want just standard (MRI) ruby. Or prepend the version with a edition. For example `jruby-1.7`
+So you can either just do a version like `2.2.1` if you want just standard (MRI) ruby. Or prepend the version with a edition.
+For example `jruby-1.7`
 
 Optionally you can also specify the version of the ruby-install script
 with `ruby_install_version`.
+
+See more (less relevant) variables you can modify in `defaults/main.yml`.
 
 ## Dependencies
 Needs no other Ansible roles to run.
