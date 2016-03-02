@@ -32,7 +32,7 @@ script:
   - "ansible-playbook -i tests/inventory tests/$SITE --connection=local"
 
   # Run the role/playbook again, checking to make sure it's idempotent.
-  # Allowing two 'changes' here as those are only reading state not changing anything.
+  # Allowing 1 'change' here as those are only reading state not changing anything.
   - >
     ansible-playbook -i tests/inventory tests/$SITE --connection=local
     | grep -q 'changed=1.*failed=0'

@@ -22,7 +22,7 @@
     - patch
 
 - name: Install given ruby version from source using ruby-install
-  command: ruby-install {{ruby_edition}} {{ruby_version}} --rubies-dir {{rubies_dir}} --cleanup
+  command: ruby-install {{ruby_edition}} {{ruby_version}} --install-dir {{ruby_location}} --cleanup --no-reinstall
   args:
     creates: "{{ruby_executable}}"
   when: ruby_edition != 'jruby'
@@ -49,7 +49,7 @@
   when: ruby_edition == 'jruby'
 
 - name: Install given jruby version from source using ruby-install (for jruby we need to disable dependency install to not create a mess)
-  command: ruby-install {{ruby_edition}} {{ruby_version}} --rubies-dir {{rubies_dir}} --cleanup --no-install-deps
+  command: ruby-install {{ruby_edition}} {{ruby_version}} --install-dir {{rubies_dir}} --cleanup --no-install-deps --no-reinstall
   args:
     creates: "{{ruby_executable}}"
   when: ruby_edition == 'jruby'
@@ -57,34 +57,21 @@
 
 - name: Install Bundler
   shell: "{{ gem_executable }} install bundler {{ ruby_bundler_flags }} creates={{ ruby_location }}/bin/bundle"
-  environment:
-    PATH: "{{ansible_env.PATH}}:{{ruby_location}}/bin"
 
-- name: Create common Ruby bin symlinks
+- name: Install other system gems
+  shell: "{{ gem_executable }} install {{ item }}"
+  with_items: ruby_system_gems
+
+- name: Get all files in ruby bin directory
+  find:
+    paths: "{{ ruby_location }}/bin/"
+    patterns: '*'
+    file_type: file
+  register: ruby_bin_files
+
+- name: Symlink all Ruby bins from /usr/local/bin
   file:
-    path: "/usr/local/bin/{{ item }}"
-    src: "{{ ruby_location }}/bin/{{ item }}"
+    path: "/usr/local/bin/{{ item.path.split('/')|last }}"
+    src: "{{ item.path }}"
     state: link
-  with_items: ruby_symlinks
-
-- name: Additional JRuby symlinks
-  file:
-    path: "/usr/local/bin/{{ item }}"
-    src: "{{ ruby_location }}/bin/{{ item }}"
-    state: link
-  with_items:
-    - jruby
-    - jgem
-    - testrb
-    - jirb
-  when: ruby_edition == 'jruby'
-
-- name: Additional Ruby (MRI) symlinks
-  file:
-    path: "/usr/local/bin/{{ item }}"
-    src: "{{ ruby_location }}/bin/{{ item }}"
-    state: link
-  with_items:
-    - erb
-  when: ruby_edition == 'ruby'
-
+  with_items: ruby_bin_files.files
