@@ -16,3 +16,6 @@ ruby_deps_apt_repos: []
 jruby_jre_package: openjdk-7-jre-headless # oracle-java8-installer
 
 ruby_bundler_flags: ""
+
+# Define additional gems to be installed and linked
+ruby_system_gems: []

@@ -55,26 +55,23 @@
   when: ruby_edition == 'jruby'
 # --- end of Jruby special treament ---
 
-- name: Add ruby bin dir to the global PATH
-  lineinfile:
-    dest: /etc/bash.bashrc
-    insertafter: 'EOF'
-    line: 'export PATH="{{ruby_location}}/bin:$PATH"'
-    state: present
-
-- name: Source /etc/profile to get new PATH
-  shell: "source /etc/bash.bashrc"
-  args:
-    executable: /bin/bash
-
 - name: Install Bundler
   shell: "{{ gem_executable }} install bundler {{ ruby_bundler_flags }} creates={{ ruby_location }}/bin/bundle"
-  args:
-    executable: /bin/bash
 
-- name: Symlink common Ruby bins to ensure they are always available even without PATH setting
+- name: Install other system gems
+  shell: "{{ gem_executable }} install {{ item }}"
+  with_items: ruby_system_gems
+
+- name: Get all files in ruby bin directory
+  find:
+    paths: "{{ ruby_location }}/bin/"
+    patterns: '*'
+    file_type: file
+  register: ruby_bin_files
+
+- name: Symlink all Ruby bins from /usr/local/bin
   file:
-    path: "/usr/local/bin/{{ item }}"
-    src: "{{ ruby_location }}/bin/{{ item }}"
+    path: "/usr/local/bin/{{ item.path.split('/')|last }}"
+    src: "{{ item.path }}"
     state: link
-  with_items: ruby_symlinks
+  with_items: ruby_bin_files.files
