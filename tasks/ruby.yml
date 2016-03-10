@@ -60,7 +60,7 @@
 
 - name: Install other system gems
   shell: "{{ gem_executable }} install {{ item }}"
-  with_items: ruby_system_gems
+  with_items: "{{ ruby_system_gems }}"
 
 - name: Get all files in ruby bin directory
   find:
