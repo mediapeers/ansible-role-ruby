@@ -70,6 +70,7 @@
   register: ruby_bin_files
 
 - name: Symlink all Ruby bins from /usr/local/bin
+  become: true
   file:
     path: "/usr/local/bin/{{ item.path.split('/')|last }}"
     src: "{{ item.path }}"

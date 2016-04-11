@@ -2,6 +2,7 @@
 # Main tasks file for the mpx.ruby role
 
 - name: Ensure make is installed (needed to install ruby_install)
+  become: true
   apt:
     name: make
     state: present
