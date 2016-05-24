@@ -38,7 +38,7 @@ Example Playbook integration:
 ```yaml
 - hosts: servers
   roles:
-     { role: mpx.ruby, ruby_version_string: 2.2.3 }
+     { role: mediapeers.ruby, ruby_version_string: 2.2.3 }
 ```
 Also works with jruby (or any ruby that [ruby-install supports](https://github.com/postmodern/ruby-install/blob/master/README.md)).
 Example: `ruby_version_string: jruby-1.7.21`. So the version directive works like the one found in [`.ruby-version` files](https://gist.github.com/fnichol/1912050).

@@ -1,5 +1,5 @@
 ---
-# Main tasks file for the mpx.ruby role
+# Main tasks file for the mediapeers.ruby role
 
 - name: Ensure make is installed (needed to install ruby_install)
   become: true

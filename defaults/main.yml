@@ -1,4 +1,4 @@
-# mpx.ruby defaults
+# mediapeers.ruby defaults
 
 ruby_version_string: 2.2.3 # can also contain the ruby edition separated with a dash such as jruby-1.7, wihout it it defaults to mri
 
