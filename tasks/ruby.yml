@@ -12,6 +12,7 @@
   with_items: ruby_deps_apt_repos
 
 - name: Ensure all dependencies are met to run the ruby-install tool without problems
+  become: true
   apt:
     name: "{{ item }}"
     state: present
