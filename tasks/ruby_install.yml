@@ -32,9 +32,8 @@
   shell: rm -rf {{ ansible_env.HOME }}/ruby-install-*
   when: ruby_install_downloaded | changed
 
-#
 # Setup ruby-install facts.d
-#
+
 - name: Capture installed ruby-install version
   shell: ruby-install --version | awk '{ print $2 }'
   ignore_errors: yes
@@ -42,8 +41,13 @@
 
 - name: Create ansible facts directory
   become: true
-  file: state=directory recurse=yes path=/etc/ansible/facts.d
+  file:
+    state: directory
+    recurse: yes
+    path: /etc/ansible/facts.d
 
 - name: Set ruby-install facts
   become: true
-  template: src=ruby_install.fact dest=/etc/ansible/facts.d/ruby_install.fact
+  template:
+    src: ruby_install.fact
+    dest: /etc/ansible/facts.d/ruby_install.fact

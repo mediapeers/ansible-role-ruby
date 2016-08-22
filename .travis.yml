@@ -11,10 +11,15 @@ env:
 before_install:
   - sudo apt-get update -qq
 
-  # Delete rubieis
+  # Delete rubies and RVM
   - sudo rm /usr/bin/ruby /usr/bin/gem
   - rvm implode --force
-  - sudo rm -r /usr/local/rvm/
+  - rm -rf /home/travis/.rvm/
+  - rm ~/.rvmrc
+  - unset MY_RUBY_HOME
+  - unset GEM_HOME
+  - unset GEM_PATH
+  - env
 
 install:
   # Install Ansible.

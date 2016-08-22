@@ -34,7 +34,7 @@ describe "Ruby installation" do
 
   # disable/change if you overwrite the default version
   describe command('gem -v') do
-    its(:stdout) { should match /2.4/ }
+    its(:stdout) { should match /2.5/ }
   end
 
   describe file('/usr/local/bin/ruby') do
