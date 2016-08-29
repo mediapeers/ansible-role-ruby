@@ -35,7 +35,7 @@
   when: ruby_edition == 'jruby' and jruby_jre_package|match('oracle')
 
 # ruby-install is installing full java (not just headless-jre).
-# This includes also GUI and sound packages which are nont needed to run ruby and a liability
+# This includes also GUI and sound packages which are not needed to run ruby and are a liability
 # when installing on a server. See https://github.com/postmodern/ruby-install/pull/131
 # This role thus alows selecting your own java package, this is also handy if you want another
 # java edition (such as oracle java)
@@ -54,7 +54,7 @@
   args:
     creates: "{{ruby_executable}}"
   when: ruby_edition == 'jruby'
-# --- end of Jruby special treament ---
+# --- end of Jruby special treatment ---
 
 - name: Install Bundler
   shell: "{{ gem_executable }} install bundler {{ ruby_bundler_flags }} creates={{ ruby_location }}/bin/bundle"
