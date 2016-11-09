@@ -77,3 +77,4 @@
     src: "{{ item.path }}"
     state: link
   with_items: "{{ ruby_bin_files.files }}"
+  when: ruby_bin_symlinking
