@@ -9,7 +9,7 @@
     update_cache: yes
 
 # Installs the ruby-install tool:
-- include: ruby_install.yml
+- import_tasks: ruby_install.yml
 
 # Installs ruby itself (from source):
-- include: ruby.yml
+- import_tasks: ruby.yml
