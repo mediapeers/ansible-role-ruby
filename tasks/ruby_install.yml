@@ -18,19 +18,19 @@
     copy: no
     src: "{{ ansible_env.HOME }}/ruby-install-{{ ruby_install_version }}.tar.gz"
     dest: "{{ ansible_env.HOME }}"
-  when: ruby_install_downloaded | changed
+  when: ruby_install_downloaded is changed
 
 - name: Install ruby-install
   become: true
   shell:
     chdir={{ ansible_env.HOME }}/ruby-install-{{ ruby_install_version }}
     make install
-  when: ruby_install_downloaded | changed
+  when: ruby_install_downloaded is changed
   register: ruby_install_installed
 
 - name: Clean up ruby-install sources
   shell: rm -rf {{ ansible_env.HOME }}/ruby-install-*
-  when: ruby_install_downloaded | changed
+  when: ruby_install_downloaded is changed
 
 # Setup ruby-install facts.d
 
