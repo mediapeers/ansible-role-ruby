@@ -2,6 +2,6 @@
 - hosts: localhost
   become: true
   vars:
-    ruby_version_string: 2.3.0
+    ruby_version_string: 2.5.1
   roles:
     - ansible-role-ruby
