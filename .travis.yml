@@ -11,7 +11,7 @@ env:
 before_install:
   - sudo apt-get update -qq
 
-  # Delete rubies and RVM
+  # Delete rubies and RVM, we will install our own Ruby with this role
   - sudo rm /usr/bin/ruby /usr/bin/gem
   - rvm implode --force
   - rm -rf /home/travis/.rvm/
@@ -48,3 +48,6 @@ script:
   # Installung & running serverspec (using ruby installed by role)
   - sudo gem install serverspec
   - sudo rake spec
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

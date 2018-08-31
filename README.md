@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mediapeers/ansible-role-ruby.svg?branch=master)](https://travis-ci.org/mediapeers/ansible-role-ruby)
+[![Build Status](https://travis-ci.com/mediapeers/ansible-role-ruby.svg?branch=master)](https://travis-ci.com/mediapeers/ansible-role-ruby)
 
 # Ansible role ruby
 
