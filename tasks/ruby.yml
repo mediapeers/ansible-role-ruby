@@ -56,8 +56,8 @@
   when: ruby_edition == 'jruby'
 # --- end of Jruby special treatment ---
 
-- name: Install Bundler
-  shell: "{{ gem_executable }} install bundler {{ ruby_bundler_flags }} creates={{ ruby_location }}/bin/bundle"
+- name: Install Bundler (after making sure latest RubyGems is installed)
+  shell: "{{ gem_executable }} update --N --system && {{ gem_executable }} install -N bundler {{ ruby_bundler_flags }} creates={{ ruby_location }}/bin/bundle"
 
 - name: Install other system gems
   shell: "{{ gem_executable }} install {{ item }}"
