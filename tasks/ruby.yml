@@ -57,10 +57,10 @@
 # --- end of Jruby special treatment ---
 
 # See docs for gem install/update at https://guides.rubygems.org/command-reference/
+# Some notes on workarrounds added here:
 # * 'gem update --system' is necessary to always ensure RubyGems is up to date enough for gem install bundler to work
-# * 'gem install bundler' just installs bundler (actual purpose of this task)
-# * install bundler needs '--force' option as it otherwise won't work after a update --system, see issue https://github.com/rubygems/rubygems/issues/2058
-# * '-N' option is used to not generate documentation (shorthand for --no-document)
+# * 'gem install bundler' needs the '--force' option as it otherwise won't work after a 'gem update --system', see issue https://github.com/rubygems/rubygems/issues/2058
+# * The '-N' option is used to not generate documentation (shorthand for --no-document)
 - name: Install Bundler (after making sure latest RubyGems is installed)
   shell: "{{ gem_executable }} update -N --system && {{ gem_executable }} install -N --force bundler {{ ruby_bundler_flags }}"
   args:
