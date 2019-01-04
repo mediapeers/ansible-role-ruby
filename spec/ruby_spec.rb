@@ -32,9 +32,9 @@ describe "Ruby installation" do
     its(:stdout) { should match /#{ruby_edition} #{ruby_version}/ }
   end
 
-  # disable/change if you overwrite the default version
+  # can be replaced with latest gem version.
   describe command('gem -v') do
-    its(:stdout) { should match /2.7/ }
+    its(:stdout) { should match /3.0.2/ }
   end
 
   describe file('/usr/local/bin/ruby') do
