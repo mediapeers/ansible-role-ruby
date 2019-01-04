@@ -58,13 +58,14 @@
 
 # See docs for gem install/update at https://guides.rubygems.org/command-reference/
 # Some notes on workarrounds added here:
-# * 'gem update --system' is necessary to always ensure RubyGems is up to date enough for gem install bundler to work
+# * 'gem update --system' is necessary to always ensure RubyGems is up to date enough for gem install bundler to work / for detecting recent bundlers
 # * 'gem install bundler' needs the '--force' option as it otherwise won't work after a 'gem update --system', see issue https://github.com/rubygems/rubygems/issues/2058
 # * The '-N' option is used to not generate documentation (shorthand for --no-document)
 - name: Install Bundler (after making sure latest RubyGems is installed)
   shell: "{{ gem_executable }} update -N --system && {{ gem_executable }} install -N --force bundler {{ ruby_bundler_flags }}"
   args:
     creates: "{{ ruby_location }}/bin/bundle"
+  when: ruby_bundler_installing
 
 - name: Install other system gems
   shell: "{{ gem_executable }} install {{ item }}"
@@ -85,3 +86,11 @@
     state: link
   with_items: "{{ ruby_bin_files.files }}"
   when: ruby_bin_symlinking
+
+- name: Collect Ruby infos
+  shell: "whoami && ruby -v && gem -v && bundle -v"
+  register: ruby_infos
+
+- name: Output Ruby infos
+  debug:
+    var: ruby_infos.stdout_lines
