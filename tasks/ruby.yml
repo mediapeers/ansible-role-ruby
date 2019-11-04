@@ -31,7 +31,7 @@
 # Accept Java license in case Oracle Java is being used
 - name: Accept Oracle license prior JDK installation
   shell: echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections; echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections creates=/usr/lib/jvm/java-8-oracle
-  when: ruby_edition == 'jruby' and jruby_jre_package|match('oracle')
+  when: ruby_edition == 'jruby' and jruby_jre_package is match('oracle')
 
 # ruby-install is installing full java (not just headless-jre).
 # This includes also GUI and sound packages which are not needed to run ruby and are a liability
