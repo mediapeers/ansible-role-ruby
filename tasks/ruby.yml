@@ -14,13 +14,12 @@
 - name: Ensure all dependencies are met to run the ruby-install tool without problems
   become: true
   apt:
-    name: "{{ item }}"
+    name:
+      - wget
+      - bzip2
+      - tar
+      - patch
     state: present
-  with_items:
-    - wget
-    - bzip2
-    - tar
-    - patch
 
 - name: Install given ruby version from source using ruby-install
   command: ruby-install {{ruby_edition}} {{ruby_version}} --install-dir {{ruby_location}} --cleanup --no-reinstall
