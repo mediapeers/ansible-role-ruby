@@ -19,6 +19,8 @@
       - bzip2
       - tar
       - patch
+      # Most ruby apps need this dependency, hence adding it here too
+      - libcurl4-openssl-dev
     state: present
 
 - name: Install given ruby version from source using ruby-install
