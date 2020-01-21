@@ -34,7 +34,7 @@ describe "Ruby installation" do
 
   # can be replaced with latest gem version.
   describe command('gem -v') do
-    its(:stdout) { should match /3.0/ }
+    its(:stdout) { should match /3.1/ }
   end
 
   describe file('/usr/local/bin/ruby') do
