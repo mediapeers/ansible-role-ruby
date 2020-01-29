@@ -1,16 +1,20 @@
 ---
 galaxy_info:
   author: Stefan Horning <horning@mediapeers.com>
-  description: "Installs ruby from source in given version"
-  company: Mediapeers
-  license: MIT
+  description: Installs ruby from source in given version
+  company: Mediapeers GmbH
+  license: BSD
+
   min_ansible_version: 2.4
   platforms:
-  - name: Ubuntu
-    versions:
-    - trusty
-  categories:
-  - development
-  - system
-  - language:ruby
+    - name: Ubuntu
+      versions:
+        - trusty
+
+  galaxy_tags:
+    - development
+    - system
+    - language
+    - ruby
+
 dependencies: []

@@ -5,7 +5,7 @@
 
 - name: Output ruby edition and version to be installed
   debug:
-    msg: "{{ruby_edition}} - {{ruby_version}}"
+    msg: "{{ ruby_edition }} - {{ ruby_version }}"
 
 - name: Add apt repositories for ruby dependencies
   apt_repository: repo={{ item }} state=present update_cache=yes
@@ -24,9 +24,9 @@
     state: present
 
 - name: Install given ruby version from source using ruby-install
-  command: ruby-install {{ruby_edition}} {{ruby_version}} --install-dir {{ruby_location}} --cleanup --no-reinstall
+  command: ruby-install {{ ruby_edition }} {{ ruby_version }} --install-dir {{ ruby_location }} --cleanup --no-reinstall
   args:
-    creates: "{{ruby_executable}}"
+    creates: "{{ ruby_executable }}"
   when: ruby_edition != 'jruby'
 
 # --- Jruby special treament ---
@@ -42,7 +42,7 @@
 # java edition (such as oracle java)
 
 - name: Install Jruby dependencies (Java) manually as the ruby-install would do too much
-  apt: name={{jruby_jre_package}} state=present
+  apt: name={{ jruby_jre_package }} state=present
   when: ruby_edition == 'jruby'
 
 # Workaround for https://github.com/jruby/jruby/issues/3285 for jruby versions > 1.7.21
@@ -51,9 +51,9 @@
   when: ruby_edition == 'jruby'
 
 - name: Install given jruby version from source using ruby-install (for jruby we need to disable dependency install to not create a mess)
-  command: ruby-install {{ruby_edition}} {{ruby_version}} --install-dir {{rubies_dir}} --cleanup --no-install-deps --no-reinstall
+  command: ruby-install {{ ruby_edition }} {{ ruby_version }} --install-dir {{ rubies_dir }} --cleanup --no-install-deps --no-reinstall
   args:
-    creates: "{{ruby_executable}}"
+    creates: "{{ ruby_executable }}"
   when: ruby_edition == 'jruby'
 # --- end of Jruby special treatment ---
 
